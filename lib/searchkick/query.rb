@@ -18,7 +18,7 @@ module Searchkick
       unknown_keywords = options.keys - [:aggs, :body, :body_options, :boost,
         :boost_by, :boost_by_distance, :boost_by_recency, :boost_where, :conversions, :conversions_term, :debug, :emoji, :exclude, :execute, :explain,
         :fields, :highlight, :includes, :index_name, :indices_boost, :limit, :load,
-        :match, :misspellings, :model_includes, :offset, :operator, :order, :padding, :page, :per_page, :profile,
+        :match, :misspellings, :model_includes, :offset, :operator, :order, :padding, :page, :per_page, :profile, :active_record_model,
         :request_params, :routing, :scope_results, :select, :similar, :smart_aggs, :suggest, :total_entries, :track, :type, :where]
       raise ArgumentError, "unknown keywords: #{unknown_keywords.join(", ")}" if unknown_keywords.any?
 
@@ -117,7 +117,8 @@ module Searchkick
         term: term,
         scope_results: options[:scope_results],
         index_name: options[:index_name],
-        total_entries: options[:total_entries]
+        total_entries: options[:total_entries],
+        active_record_model: @active_record_model
       }
 
       if options[:debug]
@@ -470,6 +471,10 @@ module Searchkick
       if !options[:body] || pagination_options
         payload[:size] = per_page
         payload[:from] = offset
+      end
+
+      if options[:active_record_model]
+        @active_record_model = options[:active_record_model]
       end
 
       # type
