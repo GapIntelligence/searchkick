@@ -28,7 +28,7 @@ module Searchkick
           hits.group_by { |hit, _| hit["_index"] }.each do |index, grouped_hits|
             klasses =
               if @klass
-                [@klass]
+                [active_record_model || @klass].flatten
               else
                 index_alias = index.split("_")[0..-2].join("_")
                 Array((options[:index_mapping] || {})[index_alias])
@@ -267,6 +267,10 @@ module Searchkick
     end
 
     private
+
+    def active_record_model
+      options[:active_record_model]
+    end
 
     def results_query(records, hits)
       ids = hits.map { |hit| hit["_id"] }

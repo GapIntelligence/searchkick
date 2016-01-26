@@ -33,4 +33,11 @@ class QueryTest < Minitest::Test
     end
     refute_includes out, "Error"
   end
+
+  def test_records_with_active_record_model
+    store_names ["Milk", "Apple"]
+    query = Product.search("milk", active_record_model: ProductWithDeleted, execute: false)
+
+    assert_equal ProductWithDeleted, query.execute.first.class
+  end
 end
