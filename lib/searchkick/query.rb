@@ -381,6 +381,10 @@ module Searchkick
           @type = [options[:type] || klass].flatten.map { |v| searchkick_index.klass_document_type(v) }
         end
 
+        if options[:active_record_model]
+          @active_record_model = options[:active_record_model]
+        end
+
         # routing
         @routing = options[:routing] if options[:routing]
       end
@@ -621,11 +625,6 @@ module Searchkick
         end
       end
 
-      if options[:active_record_model]
-        @active_record_model = options[:active_record_model]
-      end
-
-      @body = payload
       @facet_limits = facet_limits
     end
 
