@@ -108,7 +108,8 @@ module Searchkick
         includes: options[:include] || options[:includes],
         json: !options[:json].nil?,
         match_suffix: @match_suffix,
-        highlighted_fields: @highlighted_fields || []
+        highlighted_fields: @highlighted_fields || [],
+        active_record_model: @active_record_model
       }
 
       # set execute for multi search
@@ -378,6 +379,10 @@ module Searchkick
 
         if options[:type] || (klass != searchkick_klass && searchkick_index)
           @type = [options[:type] || klass].flatten.map { |v| searchkick_index.klass_document_type(v) }
+        end
+
+        if options[:active_record_model]
+          @active_record_model = options[:active_record_model]
         end
 
         # routing
