@@ -210,7 +210,7 @@ module Searchkick
       if options[:active_record_model].present?
         options[:active_record_model]
       else
-        type.camelize.constantize
+        klass
       end
     end
 
