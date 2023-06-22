@@ -243,7 +243,7 @@ module Searchkick
           grouped_hits.each do |index, index_hits|
             results[index] = {}
             index_models[index].each do |model|
-              results[index].merge!(results_query(model, index_hits).to_a.index_by { |r| r.id.to_s })
+              results[index].merge!(results_query(active_record_model(index), index_hits).to_a.index_by { |r| r.id.to_s })
             end
           end
 
@@ -327,6 +327,14 @@ module Searchkick
       end
 
       Searchkick.load_records(records, ids)
+    end
+
+    def active_record_model(index)
+      if options[:active_record_model].present?
+        options[:active_record_model]
+      else
+        index
+      end
     end
 
     def combine_includes(result, inc)

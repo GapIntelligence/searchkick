@@ -88,4 +88,11 @@ class QueryTest < Minitest::Test
       assert_search "product", ["Product A"], scope_results: ->(r) { r.where(name: "Product A") }
     end
   end
+
+  def test_records_with_active_record_model
+    store_names ["Milk", "Apple"]
+    query = Product.search("milk", active_record_model: ProductWithDeleted, execute: false)
+
+    assert_equal ProductWithDeleted, query.execute.first.class
+  end
 end
