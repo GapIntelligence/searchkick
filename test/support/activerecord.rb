@@ -77,6 +77,9 @@ class Product < ActiveRecord::Base
   belongs_to :store
 end
 
+class ProductWithDeleted < Product
+end
+
 class Store < ActiveRecord::Base
   has_many :products
 end
